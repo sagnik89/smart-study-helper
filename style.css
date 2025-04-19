@@ -17,7 +17,7 @@ body {
   font-family: sans-serif;
   background-color: var(--bg);
   color: var(--text);
-  background-image: url("/assets/images/bg.jpg");
+  background-image: url("assets/images/bg.jpg");
   opacity: 0.8;
 }
 
