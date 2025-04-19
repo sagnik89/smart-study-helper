@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="style.css" />
+    <title>Smart Study Helper</title>
+  </head>
+  <body>
+    <h1>Smart Study Helper</h1>
+    <nav>
+      <button id="todo-button">To-Do</button>
+      <button id="summarizer-button">Summarizer</button>
+      <button id="ai-button">AI Q&A</button>
+      <button id="pomodoro-button">Pomodoro Timer</button>
+    </nav>
+
+    <div class="section-part">
+      <section id="todo" class="page-component">
+        <h2>To Do List</h2>
+        <form action="#" id="taskForm" autocomplete="off">
+          <input type="text" id="taskName" placeholder="Enter Task" required />
+          <select id="priority">
+            <option>🔴 High 🔴</option>
+            <option>🟡 Medium 🟡</option>
+            <option selected>🟢 Low 🟢</option>
+          </select>
+          <input
+            type="number"
+            id="timeEstimate"
+            placeholder="Time in min"
+            value = 0
+          />
+          <button type="submit">Add Task</button>
+        </form>
+
+        <div id="taskList">
+          <!-- To be rendered when tasks present  -->
+          <!-- <div class="header">
+                <p></p> // "Completed"
+                <p>Task Name</p>
+                <p>Priority</p>
+                <p>Time (in mins) </p>
+            </div> -->
+
+            <!-- To be rendered when no tasks   -->
+            <!-- <div> No Tasks yet ..... </div> -->
+            
+        <!-- Task HTML -->
+          <!-- <div class="task">
+            <p class="task-name"><strong>${task.taskName}</strong></p>
+            <p class="priority-status">${task.priority}</p>
+            <p class="time-of-completion">${task.time}</p>
+            <input
+                type="checkbox"
+                data-index="${index}"
+                class="completion-status"
+            />
+          </div> -->
+        </div>
+      </section>
+
+      <section id="summarizer" class="page-component">
+        <h2>Summarizer</h2>
+        <textarea
+          id="inputText"
+          rows="8"
+          cols="50"
+          placeholder="Enter Text"
+        ></textarea>
+        <br />
+        <button id="summarizeBtn">Summarize</button>
+        <button id="resetBtn">Do Another</button>
+
+        <div id="summaryResult"></div>
+      </section>
+
+      <section id="ai" class="page-component">
+        <h2>AI Q&A</h2>
+      </section>
+      <section id="pomodoro" class="page-component">
+        <h2>Pomodoro Timer</h2>
+      </section>
+    </div>
+
+    <footer></footer>
+    <script src="script.js"></script>
+  </body>
+</html>
