@@ -95,7 +95,7 @@ h2{
 #timeEstimate{
   width: 70px;
 }
-#todo{
+#todo, #summarizer{
   display: flex;
   justify-content: center;
   height: max-content;
@@ -192,4 +192,52 @@ input[type="checkbox"] {
 /* centering task name */
 #task-name-heading{
   padding-right: 70px;
+}
+
+.summarizer-body{
+  display: flex;
+  /* flex-direction: column; */
+  justify-content: center;
+  /* align-items: center; */
+  gap: 10px;
+}
+
+#summarizeBtn, #resetBtn {
+  width: 100px;
+  height: 30px;
+  background-color: var(--secondary);
+  border: none;
+  color: var(--text);
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+#summarizeBtn:active, #resetBtn:active, #summarizeBtn:hover, #resetBtn:hover{
+  background-color: var(--primary);
+  color: white;
+}
+
+textarea{
+  padding: 10px;
+  font-size: 15px;
+  resize: none;
+  border: 2px solid var(--primary);
+  max-height: 300px;
+}
+
+#summaryResult{
+  border: 2px solid var(--primary);
+  height: 300px;
+  width: 700px;
+  padding: 10px;
+  font-size: 15px;
+  height: max-content;
+  min-height: 295px;
+  line-height: 23px;
+}
+
+#summarizeBtn{
+  margin-left: 75%;
+  margin-top: 20px;
 }

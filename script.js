@@ -1,43 +1,40 @@
 
 function showSection(id) {
-    const sections = document.querySelectorAll(".page-component")
-    sections.forEach(section => {
-        section.style.display = 'none'
-    })
-    const pressedElement = document.querySelector(`#${id}`)
-    pressedElement.style.display = "block"
+  const sections = document.querySelectorAll(".page-component");
+  sections.forEach((section) => {
+    section.style.display = "none";
+  });
+  const pressedElement = document.querySelector(`#${id}`);
+  pressedElement.style.display = "block";
 }
 
-
 // Button Elements
-const toDoButton = document.querySelector("#todo-button")
-const summarizerButton = document.querySelector("#summarizer-button")
-const aiButton = document.querySelector("#ai-button")
-const pomodoroButton = document.querySelector("#pomodoro-button")
-
-
+const toDoButton = document.querySelector("#todo-button");
+const summarizerButton = document.querySelector("#summarizer-button");
+const aiButton = document.querySelector("#ai-button");
+const pomodoroButton = document.querySelector("#pomodoro-button");
 
 // ------------------------------------------------ To Do List Logic ------------------------------------------------------------------
-toDoButton.addEventListener('click', (e) => {    
-    showSection("todo")
-})
+toDoButton.addEventListener("click", (e) => {
+  showSection("todo");
+});
 
 summarizerButton.addEventListener("click", (e) => {
-    showSection("summarizer");
-})
+  showSection("summarizer");
+});
 
 aiButton.addEventListener("click", (e) => {
-    showSection("ai");
-})
+  showSection("ai");
+});
 
 pomodoroButton.addEventListener("click", (e) => {
-    showSection("pomodoro");
-})
+  showSection("pomodoro");
+});
 
-showSection("todo")
+showSection("todo");
 // Render the added tasks to the List
-const taskFormElement = document.querySelector("#taskForm")
-const taskList = document.querySelector("#taskList")
+const taskFormElement = document.querySelector("#taskForm");
+const taskList = document.querySelector("#taskList");
 // let tasks = [
 //     {
 //       taskName: "Task Demo 1",
@@ -56,12 +53,11 @@ const taskList = document.querySelector("#taskList")
 //     },
 // ];
 
-let tasks = []
+let tasks = [];
 
-let completedTasks = []
+let completedTasks = [];
 
 function renderTasks() {
-
   if (tasks.length == 0) {
     taskList.innerHTML = `<div> No Tasks yet ..... </div>`;
     taskList.classList.add("no-tasks");
@@ -99,77 +95,76 @@ function renderTasks() {
   const checkboxes = document.querySelectorAll(".completion-status");
   checkboxes.forEach((checkbox) => {
     checkbox.addEventListener("change", (e) => {
-        const index = e.target.dataset.index;
-        completedTasks.push(tasks[index])
-      tasks.splice(index, 1); 
+      const index = e.target.dataset.index;
+      completedTasks.push(tasks[index]);
+      tasks.splice(index, 1);
       renderTasks(); // re-render updated list
     });
   });
 }
-    
+
 // render tasks if any in local storage -> Need to setup
-renderTasks()
+renderTasks();
 
-taskFormElement.addEventListener('submit', (e) => {
-    e.preventDefault()
-    const task = {
-        taskName: document.getElementById("taskName").value,
-        priority: document.getElementById("priority").value,
-        time: document.getElementById("timeEstimate").value,
-        
-    };
-    
-    tasks.push(task)
-    renderTasks()
-    taskFormElement.reset() //clearing all the data in the form
+taskFormElement.addEventListener("submit", (e) => {
+  e.preventDefault();
+  const task = {
+    taskName: document.getElementById("taskName").value,
+    priority: document.getElementById("priority").value,
+    time: document.getElementById("timeEstimate").value,
+  };
 
-    console.log(task)
-    console.log(tasks)
-})
+  tasks.push(task);
+  renderTasks();
+  taskFormElement.reset(); //clearing all the data in the form
 
-
-
+  console.log(task);
+  console.log(tasks);
+});
 
 // Summarizer Logic
-const API_TOKEN = "<i_d_k>"; //need to be removed, cant work until specific backend is created
 
-async function summarizeWithBART(text) {
-  const response = await fetch(
-    "https://api-inference.huggingface.co/models/facebook/bart-large-cnn",
-    {
-      method: "POST",
-      headers: {
-        "Authorization": `Bearer ${API_TOKEN}`,
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        inputs: text,
-      }),
-    }
-  );
-  
-  const data = await response.json();
-  if (data.error) throw new Error(data.error);
-  return data[0].summary_text;
+async function getSummary(text) {
+  const response = await fetch("http://localhost:5000/", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({ text: text }),
+  });
+
+  return response.json();
 }
 
-document.querySelector("#summarizeBtn").addEventListener('click', async () => {
-    const text = document.querySelector("#inputText").value;
+document.querySelector("#summarizeBtn").addEventListener("click", async () => {
+  const text = document.querySelector("#inputText").value;
+  const summaryResult = document.querySelector("#summaryResult");
 
-    document.querySelector("#summaryResult").innerHTML = text;
-    summaryResult.textContent = "Summarizing...";
-  resetBtn.style.display = "none";
+  summaryResult.textContent = "Summarizing...";
+
+  console.log("Halu")
+
+  if (!text.trim()) {
+    summaryResult.textContent = "Please enter some text to summarize.";
+    return;
+  }
 
   try {
-    const summary = await summarizeWithBART(text);
-    summaryResult.textContent = summary;
-    resetBtn.style.display = "inline";
+     const data = await getSummary(text);
+     console.log(data);
+
+    if (data.error) {
+      summaryResult.textContent = "Error: " + data.error;
+    } else {
+      summaryResult.textContent =
+        data[0]?.summary_text || "No summary returned.";
+    }
   } catch (error) {
-    summaryResult.textContent = `Error: ${error.message}`;
+    console.error(error);
+    summaryResult.textContent = "An error occurred while summarizing.";
   }
 });
 
-document.querySelector("footer").innerHTML = `© ${new Date().getFullYear()} Sagnik Ghosh`;
-
-
-
+document.querySelector(
+  "footer"
+).innerHTML = `© ${new Date().getFullYear()} Sagnik Ghosh`;
